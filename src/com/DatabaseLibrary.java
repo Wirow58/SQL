@@ -1,4 +1,7 @@
 package com;
+
+import com.resources.TableInfo;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -15,7 +18,7 @@ public final class DatabaseLibrary {
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             System.out.println("Error with playing sound.");
             ex.printStackTrace();
         }
@@ -103,55 +106,55 @@ public final class DatabaseLibrary {
     }
 
     public static void AddRecord(Connection conn, Statement stmt, String tablename, List<String> paramlist) {
-        Boolean isOK=false;
+        Boolean isOK = false;
         String sql = "";
         switch (tablename) {
             case "uganda.person":
-                isOK=ArgumentsControl.isPersonOK(paramlist);
+                isOK = ArgumentsControl.isPersonOK(paramlist);
                 sql = "INSERT INTO " + tablename + " (Name, Surname, Height, Weight) VALUES (";
                 break;
             case "uganda.soldier":
-                isOK=ArgumentsControl.isSoldierOK(stmt, paramlist);
+                isOK = ArgumentsControl.isSoldierOK(stmt, paramlist);
                 sql = "INSERT INTO " + tablename + " (Soldier_ID, Kills, Rank, SupervisingUnit_ID, SupervisingSoldier_ID) VALUES (";
                 break;
             case "uganda.commander":
                 paramlist.subList(2, paramlist.size()).clear();
-                isOK=ArgumentsControl.isCommanderOK(stmt, paramlist);
+                isOK = ArgumentsControl.isCommanderOK(stmt, paramlist);
                 sql = "INSERT INTO " + tablename + " (Commander_ID, SupervisedUnit_ID) VALUES (";
                 break;
             case "uganda.engineer":
                 paramlist.subList(3, paramlist.size()).clear();
-                isOK=ArgumentsControl.isEngineerOK(stmt, paramlist);
+                isOK = ArgumentsControl.isEngineerOK(stmt, paramlist);
                 sql = "INSERT INTO " + tablename + " (Engineer_ID, FavouriteEnergyDrink, EngineerType) VALUES (";
                 break;
             case "uganda.marksman":
                 paramlist.subList(2, paramlist.size()).clear();
-                isOK=ArgumentsControl.isMarksmanOK(stmt, paramlist);
+                isOK = ArgumentsControl.isMarksmanOK(stmt, paramlist);
                 sql = "INSERT INTO " + tablename + " (Marksman_ID, HeadshotPercent) VALUES (";
                 break;
             case "uganda.tanker":
                 paramlist.subList(2, paramlist.size()).clear();
-                isOK=ArgumentsControl.isTankerOK(stmt, paramlist);
+                isOK = ArgumentsControl.isTankerOK(stmt, paramlist);
                 sql = "INSERT INTO " + tablename + " (Tanker_ID, Position) VALUES (";
                 break;
             case "uganda.medic":
                 paramlist.subList(2, paramlist.size()).clear();
-                isOK=ArgumentsControl.isMedicOK(stmt, paramlist);
+                isOK = ArgumentsControl.isMedicOK(stmt, paramlist);
                 sql = "INSERT INTO " + tablename + " (Medic_ID, Revives) VALUES (";
                 break;
             case "uganda.equipment":
                 paramlist.subList(3, paramlist.size()).clear();
-                isOK=ArgumentsControl.isEquipmentOK(stmt, paramlist);
+                isOK = ArgumentsControl.isEquipmentOK(stmt, paramlist);
                 sql = "INSERT INTO " + tablename + " (Type, ProductionDate, Owner_ID) VALUES (";
                 break;
             case "uganda.weapon":
                 paramlist.subList(4, paramlist.size()).clear();
-                isOK=ArgumentsControl.isWeaponOK(stmt, paramlist);
+                isOK = ArgumentsControl.isWeaponOK(stmt, paramlist);
                 sql = "INSERT INTO " + tablename + " (Weapon_ID, Caliber, MagazineCapacity, ModelName) VALUES (";
                 break;
             case "uganda.vehicle":
                 paramlist.subList(4, paramlist.size()).clear();
-                isOK=ArgumentsControl.isVehicleOK(stmt, paramlist);
+                isOK = ArgumentsControl.isVehicleOK(stmt, paramlist);
                 sql = "INSERT INTO " + tablename + " (Vehicle_ID, TypeofFuel, NumberOfSeats, ModelName) VALUES (";
                 break;
             /*case "uganda.`organisation unit`":
@@ -180,5 +183,61 @@ public final class DatabaseLibrary {
                 se.printStackTrace();
             }
         }
+    }
+
+    public static void Update(Statement stmt, String tablename, List<String> paramlist) {
+        String sql = "";
+        List<String> columnInfo = null;
+        switch (tablename) {
+            case "uganda.person":
+                sql = "UPDATE " + tablename + " SET ";
+                columnInfo = TableInfo.personTable;
+                break;
+            case "uganda.soldier":
+                sql = "UPDATE " + tablename + " SET ";
+                columnInfo = TableInfo.soldierTable;
+                break;
+            case "uganda.commander":
+                sql = "UPDATE " + tablename + " SET ";
+                columnInfo = TableInfo.commanderTable;
+                break;
+            case "uganda.marksman":
+                sql = "UPDATE " + tablename + " SET ";
+                columnInfo = TableInfo.marksmanTable;
+                break;
+            case "uganda.engineer":
+                sql = "UPDATE " + tablename + " SET ";
+                columnInfo = TableInfo.engineerTable;
+                break;
+            case "uganda.tanker":
+                sql = "UPDATE " + tablename + " SET ";
+                columnInfo = TableInfo.tankerTable;
+                break;
+            case "uganda.medic":
+                sql = "UPDATE " + tablename + " SET ";
+                columnInfo = TableInfo.medicTable;
+                break;
+            case "uganda.equipment":
+                sql = "UPDATE " + tablename + " SET ";
+                columnInfo = TableInfo.equipmentTable;
+                break;
+            case "uganda.weapon":
+                sql = "UPDATE " + tablename + " SET ";
+                columnInfo = TableInfo.weaponTable;
+                break;
+            case "uganda.vehicle":
+                sql = "UPDATE " + tablename + " SET ";
+                columnInfo = TableInfo.vehicleTable;
+                break;
+        }
+        for (int i = 0; i < paramlist.size(); i++) {
+            if (paramlist.get(i) != "") {   //Powiedzieć o tym Krzysztofowi!!!!!!!!!!!!!!!
+                sql = sql + columnInfo.get(i) + " = " + "'" + paramlist.get(i) + "'";
+                if (i < paramlist.size() - 1) {
+                    sql = sql + ",";
+                }
+            }
+        }
+        sql = sql + " WHERE " + columnInfo.get(0) + " = " + paramlist.get(0);
     }
 }

@@ -23,7 +23,7 @@ public class Main {
             app = new UI();
             app.setVisible(true);
 
-            while (app.getrunning()) {
+            while (true) { //app.getrunning()
                 TimeUnit.SECONDS.sleep(1);
             }
         }

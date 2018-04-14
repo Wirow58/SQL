@@ -374,20 +374,25 @@ public class UI extends JFrame implements WindowListener {
         this.setTitle("Uganda Client App");
         this.pack();
         this.setVisible(true);
-        try {
-            conn = DriverManager.getConnection(url, username, password);
-            stmt = conn.createStatement();
-        } catch (SQLException se) {
-            dispose();
-            System.exit(0);
-
+        boolean isntlogged = false;
+        while (isntlogged==true) {
             try {
-                if (stmt != null)
-                    stmt.close();
-                if (conn != null)
-                    conn.close();
-            } catch (SQLException see) {
-
+                conn = DriverManager.getConnection(url, username, password);
+                stmt = conn.createStatement();
+                isntlogged=false;
+            } catch (SQLException se) {
+                isntlogged=true;
+                dispose();
+                se.printStackTrace();
+                //System.exit(0);
+                try {
+                    if (stmt != null)
+                        stmt.close();
+                    if (conn != null)
+                        conn.close();
+                } catch (SQLException see) {
+                    //see.printStackTrace();
+                }
             }
         }
     }

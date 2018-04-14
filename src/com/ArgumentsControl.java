@@ -13,10 +13,12 @@ public final class ArgumentsControl {
         c[3]=DataControl.CheckIfNumeric(paramlist.get(3));
         c[4]=DataControl.isHeightRange(paramlist.get(2));
         c[5]=DataControl.isWeightRange(paramlist.get(3));
-        if(c[0]&&c[1]&&c[2]&&c[3]&&c[4]&&c[5])
-            return true;
-            WarningDialogGenerator.personWarning(c);
-        return false;
+        for(int i=0; i<c.length; i++){
+            System.out.println(c[i]);
+        }
+        WarningDialogGenerator.personWarning(c);
+        System.out.println(c[0]&&c[1]&&c[2]&&c[3]&&c[4]&&c[5]);
+        return c[0]&&c[1]&&c[2]&&c[3]&&c[4]&&c[5];
     }
 
     public static boolean isSoldierOK(Statement stmt, List<String> paramlist){
