@@ -231,7 +231,7 @@ public final class DatabaseLibrary {
                 break;
         }
         for (int i = 0; i < paramlist.size(); i++) {
-            if (paramlist.get(i) != "") {   //Powiedzieć o tym Krzysztofowi!!!!!!!!!!!!!!!
+            if (paramlist.get(i) != "") {                //Powiedzieć o tym Krzysztofowi!!!!!!!!!!!!!!!
                 sql = sql + columnInfo.get(i) + " = " + "'" + paramlist.get(i) + "'";
                 if (i < paramlist.size() - 1) {
                     sql = sql + ",";
